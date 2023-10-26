@@ -1,0 +1,201 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package cine;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ *
+ * @author SENA
+ */
+public class SillasDs extends javax.swing.JFrame {
+
+    private JPanel mainPanel;
+    private JPanel panelVentas;
+    private JPanel panelSillas;
+
+    private int filas = 8;
+    private int columnas = 10;
+    private JButton[][] buttons = new JButton[filas][columnas];
+    private boolean[][] buttonStates = new boolean[filas][columnas];
+
+    /**
+     * Creates new form SillasDs
+     */
+    public SillasDs() {
+         // Configurar el JFrame principal
+        setTitle("Cine App");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+
+        // Crear el JPanel principal que actuará como contenedor
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new CardLayout()); // Usar CardLayout para cambiar entre paneles
+
+        // Crear el panel de Ventas
+        panelVentas = new JPanel();
+        JButton btnIrASillas = new JButton("Ir a Sillas Disponibles");
+        panelVentas.add(btnIrASillas);
+        btnIrASillas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarPanelSillasDisponibles();
+            }
+        });
+
+        // Agregar el panel de Ventas al contenedor principal
+        mainPanel.add(panelVentas, "Ventas");
+
+        // Crear el panel de Sillas Disponibles
+        panelSillas = new JPanel();
+        panelSillas.setLayout(new GridLayout(8, 10)); // Ajusta el layout según tus necesidades
+        actualizarSillasDisponibles();
+
+        // Agregar el panel de Sillas Disponibles al contenedor principal
+        mainPanel.add(panelSillas, "Sillas Disponibles");
+
+        // Mostrar el panel de Ventas por defecto
+        mostrarPanelVentas();
+
+        // Agregar el JPanel principal al JFrame
+        add(mainPanel);
+    }
+    private void mostrarPanelVentas() {
+        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+        cardLayout.show(mainPanel, "Ventas");
+    }
+
+    private void mostrarPanelSillasDisponibles() {
+        CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
+        cardLayout.show(mainPanel, "Sillas Disponibles");
+    }
+
+    private void actualizarSillasDisponibles() {
+        // Limpiar el panel antes de agregar los nuevos labels (opcional, depende de tu caso de uso)
+        panelSillas.removeAll();
+
+        // Crear los labels que representan las sillas y agregarlos al panel
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 10; j++) {
+                JLabel labelSilla = new JLabel(String.format("%02d", i * 10 + j + 1));
+                labelSilla.setHorizontalAlignment(SwingConstants.CENTER);
+                labelSilla.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+                panelSillas.add(labelSilla);
+            }
+        }
+
+        // Actualizar el panel para que los cambios se reflejen en la interfaz
+        panelSillas.revalidate();
+        panelSillas.repaint();
+    }
+    public void init() {
+        initializeButtons();
+    }
+
+    public void initializeButtons() {
+
+        JPanel buttonPanel = new JPanel(new GridLayout(filas, columnas, 5, 5)); // GridLayout para organizar los botones
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                buttons[i][j] = createButton(i * columnas + j + 1);
+                buttons[i][j].setEnabled(buttonStates[i][j]);
+                buttonPanel.add(buttons[i][j]);
+            }
+        }
+        jPanel1.add(buttonPanel);
+    }
+
+    private JButton createButton(final int seatNumber) {
+        JButton button = new JButton(String.format("%02d", seatNumber));
+        button.setHorizontalAlignment(SwingConstants.CENTER);
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.setEnabled(false);
+                buttonStates[seatNumber / columnas][seatNumber % columnas] = false;
+            }
+        });
+
+        return button;
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 102, 255));
+        setForeground(java.awt.Color.lightGray);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1013, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1073, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            Cine app = new Cine();
+            app.setVisible(true);
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    // End of variables declaration//GEN-END:variables
+}
